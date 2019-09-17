@@ -19,7 +19,8 @@ timestamps{
             sh 'oc new-app maven-spring -n maven-test -l app=maven'
         }
         stage('Expose'){
-            sh 'oc expose svc/maven-spring -n maven-test'
+            //sh 'oc expose svc/maven-spring -n maven-test'
+            sh 'oc create route edge maven-spring --insecure-policy=Redirect --service=maven-spring -l app=maven -n maven-test'
         }
     }
 }
