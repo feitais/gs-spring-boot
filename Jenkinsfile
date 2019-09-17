@@ -20,7 +20,7 @@ timestamps{
         }
         stage('Expose'){
             //sh 'oc expose svc/maven-spring -n maven-test'
-            sh 'oc create route edge maven-spring --insecure-policy=Redirect --service=maven-spring -l app=maven -n maven-test'
+            sh 'oc create route edge maven-spring --insecure-policy=Redirect --service=maven-spring -n maven-test'
         }
     }
 }
