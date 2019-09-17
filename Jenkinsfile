@@ -2,8 +2,8 @@ timestamps{
     node('maven'){
        
         stage('Checkout'){
-            //checkout scm
-            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/feitais/gs-spring-boot.git']]])
+            checkout scm
+            //checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/feitais/gs-spring-boot.git']]])
         }
         stage('Cleanup'){
             sh 'oc delete all -l app=maven -n maven-test'
