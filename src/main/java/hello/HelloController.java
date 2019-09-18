@@ -26,7 +26,6 @@ public class HelloController {
         // the following statement is used to log any messages  
         logger.info("Greetings from Spring Boot!");  
         fh.close();
-
     	
         return "Greetings from Spring Boot!";
     }
