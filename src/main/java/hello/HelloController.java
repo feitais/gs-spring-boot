@@ -18,7 +18,7 @@ public class HelloController {
     	
     	FileHandler fh;  
     	// This block configure the logger with handler and formatter  
-        fh = new FileHandler("console.log");  
+        fh = new FileHandler("/logs/console.log");  
         logger.addHandler(fh);
         SimpleFormatter formatter = new SimpleFormatter();  
         fh.setFormatter(formatter);  
