@@ -14,7 +14,7 @@ public class HelloController {
 
     @RequestMapping("/")
     public String index() throws SecurityException, IOException {
-    	Logger logger = Logger.getLogger("MyLog");  
+    	Logger logger = Logger.getLogger("HelloController");  
     	
     	FileHandler fh;  
     	// This block configure the logger with handler and formatter  
@@ -25,6 +25,7 @@ public class HelloController {
 
         // the following statement is used to log any messages  
         logger.info("Greetings from Spring Boot!");  
+        fh.close();
 
     	
         return "Greetings from Spring Boot!";
