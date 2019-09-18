@@ -46,7 +46,7 @@ objects:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-   name: "${NAME}"-log
+   name: "${NAME}-log"
   spec:
    accessModes:
    - ReadWriteOnce
@@ -84,9 +84,9 @@ objects:
           deploymentconfig: "${NAME}"
       spec:
         volumes:
-        - name: "${NAME}"-log
+        - name: "${NAME}-log"
           persistentVolumeClaim:
-            claimName: "${NAME}"-log
+            claimName: "${NAME}-log"
         containers:
         - image: " "
           name: "${NAME}"
@@ -99,7 +99,7 @@ objects:
               protocol: TCP
           volumeMounts:
             - mountPath: /logs
-              name: "${NAME}"-log
+              name: "${NAME}-log"
 parameters:
 - name: NAME
   displayName: Name
