@@ -46,7 +46,9 @@ objects:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-   name: "${NAME}-log"
+    labels:
+      app: "${LABEL}"
+    name: "${NAME}-log"
   spec:
    accessModes:
    - ReadWriteOnce
