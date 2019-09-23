@@ -32,7 +32,7 @@ timestamps{
             sh 'docker build . -t k8s-images/gs-spring-boot:latest'
             //sh 'docker run -it -p 8080:8080 k8s-images/gs-spring-boot:latest'
             withDockerRegistry(credentialsId: 'nexus_oci', url: 'http://cicdtools.oracle.msdigital.pro:8081')  {
-                sh 'docker push k8s-images/gs-spring-boot:latest
+                sh 'docker push k8s-images/gs-spring-boot:latest'
             }
         }
         
