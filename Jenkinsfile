@@ -1,5 +1,5 @@
 timestamps{
-    node('maven'){
+    node('mavenoci'){
        
         stage('Checkout'){
            // checkout scm
