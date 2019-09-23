@@ -6,10 +6,10 @@ timestamps{
            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/feitais/gs-spring-boot.git']]])
         }
         stage('Cleanup'){
-            sh 'oc delete all -l app=maven -n maven-test'
+            sh 'kubectl delete all -l app=maven -n maven-test'
          }
         stage ('Create PVC') {
-            sh 'oc apply -f glusterfs-dyn-pvc.yaml -n maven-test'
+            sh 'kubectl apply -f glusterfs-dyn-pvc.yaml -n maven-test'
         }
         stage('Build'){
             sh 'mvn clean install'
