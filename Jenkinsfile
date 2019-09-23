@@ -2,8 +2,8 @@ timestamps{
     node('mavenoci'){
        
         stage('Checkout'){
-           // checkout scm
-           checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/feitais/gs-spring-boot.git']]])
+           checkout scm
+           //checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/feitais/gs-spring-boot.git']]])
         }
         stage('Cleanup'){
             sh 'kubectl delete all -l app=maven -n maven-test'
