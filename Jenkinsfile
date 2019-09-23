@@ -9,7 +9,7 @@ timestamps{
             sh 'kubectl delete all -l app=maven -n maven-test'
          }
         stage ('Create PVC') {
-            sh 'kubectl apply -f glusterfs-dyn-pvc.yaml -n maven-test'
+            sh 'kubectl apply -f gs-spring-boot-persistent-volume-claim.yml -n maven-test'
         }
         stage('Build'){
             sh 'mvn clean install'
@@ -29,16 +29,19 @@ timestamps{
             }
         }
         stage('Build oc'){
-            sh 'oc new-build --name=maven-spring openshift/java --binary=true -l app=maven -n maven-test'
-            sh 'oc start-build maven-spring --from-dir=target --follow -n maven-test'
+            sh 'docker build . -t k8s-images/gs-spring-boot:latest'
+            //sh 'docker run -it -p 8080:8080 k8s-images/gs-spring-boot:latest'
+            withDockerRegistry(credentialsId: 'nexus_oci', url: 'http://cicdtools.oracle.msdigital.pro:8081')  {
+                sh 'docker push k8s-images/gs-spring-boot:latest
+            }
         }
+        
         stage('Deploy oc'){
-            sh 'oc new-app maven-spring -n maven-test -l app=maven'
-            sh 'oc set volume dc/maven-spring --add --name=volume-log -t persistentVolumeClaim --mount-path=/logs --claim-name log -n maven-test'
+            sh 'kubectl run gs-spring-boot --image=cicdtools.oracle.msdigital.pro:8081:k8s-images/gs-spring-boot:latest --port 8080'        
         }
         stage('Expose Route'){
             //sh 'oc expose svc/maven-spring -n maven-test'
-            sh 'oc create route edge maven-spring --insecure-policy=Redirect --service=maven-spring -n maven-test'
+            sh 'kubectl expose deployment gs-spring-boot --type=LoadBalancer --name=gs-spring-boot'
         }
     }
 }
