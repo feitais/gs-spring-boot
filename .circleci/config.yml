@@ -20,8 +20,11 @@ jobs:
       - run: mvn test
 
 workflows:
-  build_and_tests:
+  build:
     jobs:
       - build
+  tests:
+    jobs:
       - test
+
   
