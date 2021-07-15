@@ -1,5 +1,4 @@
 version: 2.1
-
 jobs:
   build:
     docker:
@@ -10,7 +9,7 @@ jobs:
     steps:
       - checkout
       - run: mvn compile 
-  echo:
+  test:
     docker:
       - image: circleci/openjdk:stretch
         auth:
@@ -24,4 +23,5 @@ workflows:
   build_and_tests:
     jobs:
       - build
+      - test
   
