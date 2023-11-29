@@ -1,5 +1,5 @@
-FROM openjdk:8
-RUN mkdir /usr/app
-RUN chmod 777 /usr/app
-WORKDIR /usr/app
-ADD gs-spring-boot-0.0.1.jar /usr/app/gs-spring-boot-0.0.1.jar
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+USER 1000
+COPY --chown=1000:1000 target/greetings-0.0.1-SNAPSHOT.jar /app/greetings-0.0.1-SNAPSHOT.jar
+CMD ["java","-jar","/app/greetings-0.0.1-SNAPSHOT.jar"]

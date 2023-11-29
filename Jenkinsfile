@@ -1,44 +1,44 @@
-timestamps{
-    node('maven'){
-       
-        stage('Checkout'){
-           // checkout scm
-           checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/feitais/gs-spring-boot.git']]])
-        }
-        stage('Cleanup'){
-            sh 'oc delete all -l app=maven -n maven-test'
-         }
-        stage ('Create PVC') {
-            sh 'oc apply -f glusterfs-dyn-pvc.yaml -n maven-test'
-        }
-        stage('Build'){
-            sh 'mvn clean install'
-        }
-        stage('Code Quality'){
-            withSonarQubeEnv('SonarQube') { 
-                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
-            }
-        }
-        stage('Quality gate'){
-            timeout(activity: true, time: 15, unit: 'SECONDS') {
-                sleep(10)
-                def qg = waitForQualityGate()
-                if (qg.status != 'OK') {
-                    error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                }
-            }
-        }
-        stage('Build oc'){
-            sh 'oc new-build --name=maven-spring openshift/java --binary=true -l app=maven -n maven-test'
-            sh 'oc start-build maven-spring --from-dir=target --follow -n maven-test'
-        }
-        stage('Deploy oc'){
-            sh 'oc new-app maven-spring -n maven-test -l app=maven'
-            sh 'oc set volume dc/maven-spring --add --name=volume-log -t persistentVolumeClaim --mount-path=/logs --claim-name log -n maven-test'
-        }
-        stage('Expose Route'){
-            //sh 'oc expose svc/maven-spring -n maven-test'
-            sh 'oc create route edge maven-spring --insecure-policy=Redirect --service=maven-spring -n maven-test'
-        }
-    }
+pipeline {
+	agent none
+
+	triggers {
+		pollSCM 'H/10 * * * *'
+	}
+
+	options {
+		disableConcurrentBuilds()
+		buildDiscarder(logRotator(numToKeepStr: '14'))
+	}
+
+	stages {
+		stage("test: baseline (jdk8)") {
+			agent {
+				docker {
+					image 'adoptopenjdk/openjdk8:latest'
+					args '-v $HOME/.m2:/tmp/jenkins-home/.m2'
+				}
+			}
+			options { timeout(time: 30, unit: 'MINUTES') }
+			steps {
+				sh 'test/run.sh'
+			}
+		}
+
+	}
+
+	post {
+		changed {
+			script {
+				slackSend(
+						color: (currentBuild.currentResult == 'SUCCESS') ? 'good' : 'danger',
+						channel: '#sagan-content',
+						message: "${currentBuild.fullDisplayName} - `${currentBuild.currentResult}`\n${env.BUILD_URL}")
+				emailext(
+						subject: "[${currentBuild.fullDisplayName}] ${currentBuild.currentResult}",
+						mimeType: 'text/html',
+						recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+						body: "<a href=\"${env.BUILD_URL}\">${currentBuild.fullDisplayName} is reported as ${currentBuild.currentResult}</a>")
+			}
+		}
+	}
 }
