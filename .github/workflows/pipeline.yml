@@ -47,5 +47,3 @@ jobs:
       - name: Deploy Image to Cloud Run
         run: |- 
           gcloud run deploy gs-spring-boot --region us-central1 --image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
-          
-        
