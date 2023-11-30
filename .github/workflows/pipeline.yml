@@ -12,6 +12,7 @@ jobs:
     steps:
     - name: Checkout the code
       uses: actions/checkout@v2
+
     - name: mobsfscan
       uses: MobSF/mobsfscan@main
       with:
@@ -22,6 +23,7 @@ jobs:
         sarif_file: results.sarif
 
   run-cicd:
+    needs: mobsfscan
     runs-on: ubuntu-20.04
     name: run-cicd
     steps:
