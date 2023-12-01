@@ -17,4 +17,4 @@ steps:
     - 'us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest'
     - '--region'
     - 'us-central1'
-images: ["us-central1-docker.pkg.dev/ç/bien-repository/gs-spring-boot"]
+images: ["us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot"]
