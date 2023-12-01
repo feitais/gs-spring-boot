@@ -5,7 +5,25 @@ on:
       - main
 
 jobs:
+
+  mobsfscan:
+    runs-on: ubuntu-latest
+    name: mobsfscan code scanning
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v2
+
+    - name: mobsfscan
+      uses: MobSF/mobsfscan@main
+      with:
+        args: '. --sarif --output results.sarif || true'
+    - name: Upload mobsfscan report
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: results.sarif
+
   run-cicd:
+    needs: mobsfscan
     runs-on: ubuntu-20.04
     name: run-cicd
     steps:
@@ -25,7 +43,7 @@ jobs:
   
       - name: Authenticate to Google Cloud
         id: 'auth'
-        uses: google-github-actions/auth@v0
+        uses: google-github-actions/auth@v2
         with:
           credentials_json: '${{ secrets.GKE_SA_KEY }}'
       - name: Setup Google Cloud CLI
