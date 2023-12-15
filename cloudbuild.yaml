@@ -14,8 +14,7 @@ steps:
     args:
      - -c
      - |
-       gcloud artifacts docker images scan us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest \
-       --format='value(response.scan)' > /workspace/scan_id.txt
+       gcloud artifacts docker images scan us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest --format='value(response.scan)' > /workspace/scan_id.txt
 
   - id: severity check
     name: gcr.io/google.com/cloudsdktool/cloud-sdk
