@@ -1,5 +1,5 @@
 FROM openjdk:17-jdk-slim
-RUN apt update -y
+RUN apt update -y && apt intall -y
 WORKDIR /app
 USER 1000
 COPY --chown=1000:1000 target/greetings-0.0.1-SNAPSHOT.jar /app/greetings-0.0.1-SNAPSHOT.jar
