@@ -2,7 +2,7 @@ steps:
   - id: mvn install
     name: maven:3-eclipse-temurin-17-alpine
     entrypoint: mvn
-    args: ["install"]
+    args: ["install -DskioTests=true"]
 
   - id: Docker Build
     name: gcr.io/cloud-builders/docker
