@@ -53,6 +53,18 @@
 			<version>8.4.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>spring-cloud-gcp-starter-kms</artifactId>
+			<version>3.7.5</version>
+		 </dependency>
+
+		 <dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>spring-cloud-gcp-starter-secretmanager</artifactId>
+			<version>3.7.5</version>
+		  </dependency>
+
 	</dependencies>
 
 	<build>
