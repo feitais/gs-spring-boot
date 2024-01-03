@@ -11,6 +11,6 @@ public class GreetingsSecretController {
 
     @GetMapping("/secret")
 	public String secret() {
-		return "Greetings from Spring Boot!! " + secret;
+		return "The value of the secret is: " + secret;
 	}
 }
