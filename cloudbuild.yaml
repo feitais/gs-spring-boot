@@ -7,7 +7,11 @@ steps:
   - id: Docker Build
     name: gcr.io/cloud-builders/docker
     args: ["build", "-t", "us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot", "--build-arg=no-cache" , "--build-arg=JAR_FILE=target/greetings-0.0.1-SNAPSHOT.jar", "."]
-
+  
+  - id: Trivy Scan
+    name: aquasec/trivy:0.48.1
+    args: ["trivy", "image", "gs-spring-boot"]
+    
   - id: Docker Push
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
