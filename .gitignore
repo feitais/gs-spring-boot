@@ -18,4 +18,4 @@ README.html
 /console.log
 key.json
 *.terraform
-knf-gcp-starbien-test.json
+*.json
