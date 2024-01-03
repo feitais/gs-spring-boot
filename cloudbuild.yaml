@@ -2,7 +2,7 @@ steps:
   - id: mvn install
     name: maven:3-eclipse-temurin-17-alpine
     entrypoint: mvn
-    args: ["install -DskipTests=true"]
+    args: ["install", '-Dmaven.test.skip=true']
 
   - id: Docker Build
     name: gcr.io/cloud-builders/docker
