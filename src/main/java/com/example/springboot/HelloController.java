@@ -9,7 +9,7 @@ String secret = "Secret";
 
 	@GetMapping("/")
 	public String index() {
-		return "Greetings from Spring Boot!! " + secret;
+		return "Greetings from Spring Boot!! ";
 	}
 
 }
