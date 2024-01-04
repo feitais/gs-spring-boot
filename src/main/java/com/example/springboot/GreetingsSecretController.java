@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class GreetingsSecretController {
-    @Value("${sm://starbien-dummy-secret}")
+    @Value("${sm://gs-secret-test}")
     String secret;
 
     @GetMapping("/secret")
