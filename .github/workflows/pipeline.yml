@@ -1,0 +1,48 @@
+name: Bien-prj-CICD
+on:
+  push:
+    branches: 
+      - actions
+
+jobs:
+
+  run-cicd:
+    runs-on: ubuntu-20.04
+    name: run-cicd
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+      - name: Install Dependencies
+        run: mvn clean install 
+  
+      - name: Authenticate to Google Cloud
+        id: 'auth'
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GKE_SA_KEY }}'
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: 'bien-prj'
+      - name: Setup Docker Auth
+        run: gcloud --quiet auth configure-docker us-central1-docker.pkg.dev
+        shell: bash
+      
+      - name: Build Image with Docker
+        run: |-
+          docker build --tag us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest .
+        shell: bash
+      - name: Push Image with Docker
+        run: |-
+          docker push us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
+        shell: bash
+      - name: Deploy Image to Cloud Run
+        run: |- 
+          gcloud run deploy gs-spring-boot --region us-central1 --image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
