@@ -22,13 +22,14 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>3.2.1</version>
 		</dependency>
 
 		<!-- tag::actuator[] -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-			<version>3.2.0</version>
+			<version>3.2.1</version>
 		</dependency>
 		<!-- end::actuator[] -->
 
@@ -37,6 +38,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<version>3.2.1</version>
 		</dependency>
 		<!-- end::tests[] -->
 		<!-- Dependency for spring-boot-devtools -->
@@ -72,6 +74,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.2.1</version>
 			</plugin>
 
 			<plugin>
