@@ -100,6 +100,12 @@
 			<version>4.0.0-alpha-10</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>6.1.2</version>
+		</dependency>
 <!--
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
@@ -135,12 +141,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>6.1.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
 			<version>6.1.2</version>
 		</dependency>
 
