@@ -8,6 +8,9 @@ spec:
     spec:
       containers:
       - name: gs-spring-boot
+        env:
+        - name: GOOGLE_CLOUD_PROJECT
+          value: bien-prj
         resources:
           limits:
             memory: 2048Mi
@@ -17,14 +20,14 @@ spec:
         readinessProbe:
           httpGet:
             path: /actuator/health
-            port: 8080
+            port: gs-port
           initialDelaySeconds: 10
           periodSeconds: 10
           failureThreshold: 3
         livenessProbe:
           httpGet:
             path: /actuator/health
-            port: 8080
+            port: gs-port
           initialDelaySeconds: 10
           periodSeconds: 10
           failureThreshold: 3

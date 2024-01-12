@@ -74,6 +74,6 @@ jobs:
           ../../kustomize edit set image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
           ../../kustomize build . | kubectl apply -n default -f -
           kubectl -n default rollout status deployment/gs-spring-boot --timeout "3m"
-          kubectl get services -o wide
+          kubectl -n default get services -o wide
         shell: bash
     
