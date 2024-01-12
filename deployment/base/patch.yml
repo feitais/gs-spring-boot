@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gs-spring-boot
+spec:
+  # replicas: 1
+  template:
+    spec:
+      containers:
+      - name: gs-spring-boot
+        resources:
+          limits:
+            memory: 2048Mi
+          requests:
+            cpu: 100m
+            memory: 1024Mi
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
