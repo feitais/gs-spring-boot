@@ -7,7 +7,7 @@ on:
 jobs:
 
   run-cicd:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: run-cicd
     steps:
       - name: Checkout repository
@@ -78,5 +78,5 @@ jobs:
           ../../kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/gs-spring-boot --timeout "3m"
           kubectl get services -o wide
-          shell: bash
+        shell: bash
     
