@@ -2,26 +2,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gs-spring-boot
+  labels:
+    app: gs-spring-boot
 spec:
   replicas: 1
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-        maxSurge: 10%
-        maxUnavailable: 10% 
   selector:
     matchLabels:
-      app: gs-spring-boot  
+      app: gs-spring-boot
   template:
     metadata:
       labels:
         app: gs-spring-boot
     spec:
       containers:
-        - name: gs-spring-boot
-          image: us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
-          ports:
-            - containerPort: 8080
+      - name: gs-spring-boot
+        image: us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
+        ports:
+        - name: gs-spring-boot-port
+          containerPort: 8080
           readinessProbe:
             httpGet:
               path: /actuator/health
