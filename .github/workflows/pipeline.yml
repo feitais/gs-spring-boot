@@ -28,11 +28,18 @@ jobs:
         run: gcloud --quiet auth configure-docker us-central1-docker.pkg.dev
         shell: bash 
 
+      - name: Setup Kustomize
+        run: |-
+            curl -L https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.5.4/kustomize_v4.5.4_linux_amd64.tar.gz | tar -zxf -
+            chmod u+x ./kustomize
+        shell: bash
+
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'zulu'
+  
       - name: Install Dependencies
         run: mvn clean install
 
@@ -59,17 +66,6 @@ jobs:
         with:
           cluster_name: autopilot-cluster-1
           location: us-central1
-      - name: Setup Kustomize
-        run: |-
-          curl -L https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.5.4/kustomize_v4.5.4_linux_amd64.tar.gz | tar -zxf -
-          chmod u+x ./kustomize
-          shell: bash
-    
-          - name: Get GKE Cluster Credentials
-          uses: 'google-github-actions/get-gke-credentials@v0'
-          with:
-            cluster_name: gke-autopilot
-            location: autopilot-cluster-1
     
       - name: Deploy With Kustomize
         run: |-
