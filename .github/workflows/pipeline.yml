@@ -70,9 +70,9 @@ jobs:
     
       - name: Deploy With Kustomize
         run: |-
-          cd ./deployment
+          cd ./deployment/base
           ../kustomize edit set image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
-          ../kustomize build . | kubectl apply -f -
+          ../kustomize build . | kubectl apply -k .
           kubectl rollout status deployment/gs-spring-boot --timeout "3m"
           kubectl get services -o wide
         shell: bash
