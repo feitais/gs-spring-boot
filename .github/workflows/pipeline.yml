@@ -51,7 +51,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
       - name: Push Image with Docker
         run: |-
-          docker push us-central1-docker.pkg.dev/starbien-lab/sb-repository/gs-spring-boot:latest
+          docker push us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
         shell: bash
 
       - name: Get GKE Cluster Credentials
