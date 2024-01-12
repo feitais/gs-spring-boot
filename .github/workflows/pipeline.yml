@@ -32,6 +32,7 @@ jobs:
         run: |-
             curl -L https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.5.4/kustomize_v4.5.4_linux_amd64.tar.gz | tar -zxf -
             chmod u+x ./kustomize
+            ls -las
         shell: bash
 
       - name: Setup Java
