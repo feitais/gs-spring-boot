@@ -2,7 +2,7 @@ name: Bien-prj-CICD
 on:
   push:
     branches: 
-      - kubernetes
+      - actions
 
 jobs:
 
