@@ -2,7 +2,7 @@ name: Bien-prj-CICD
 on:
   push:
     branches: 
-      - actions
+      - kubernetes
 
 jobs:
 
@@ -19,14 +19,14 @@ jobs:
         id: 'auth'
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: '${{ secrets.GKE_SA_KEY }}'
+          credentials_json: '${{ secrets.LAB_GITHUB_SA_KEY }}'
       - name: Setup Google Cloud CLI
         uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: 'bien-prj'
+          project_id: 'starbien-lab'
       - name: Setup Docker Auth
         run: gcloud --quiet auth configure-docker us-central1-docker.pkg.dev
-        shell: bash
+        shell: bash 
 
       - name: Setup Java
         uses: actions/setup-java@v3
@@ -35,15 +35,15 @@ jobs:
           distribution: 'zulu'
       - name: Install Dependencies
         run: mvn clean install
-      
+
       - name: Build Image with Docker
         run: |-
-          docker build --tag us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest .
+          docker build --tag us-central1-docker.pkg.dev/starbien-lab/sb-repository/gs-spring-boot:latest .
         shell: bash
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest'
+          image-ref: 'us-central1-docker.pkg.dev/starbien-lab/sb-repository/gs-spring-boot:latest'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
@@ -51,8 +51,32 @@ jobs:
           severity: 'CRITICAL,HIGH'
       - name: Push Image with Docker
         run: |-
-          docker push us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
+          docker push us-central1-docker.pkg.dev/starbien-lab/sb-repository/gs-spring-boot:latest
         shell: bash
-      - name: Deploy Image to Cloud Run
-        run: |- 
-          gcloud run deploy gs-spring-boot --region us-central1 --image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
+
+      - name: Get GKE Cluster Credentials
+        uses: 'google-github-actions/get-gke-credentials@v2'
+        with:
+          cluster_name: autopilot-cluster-1
+          location: us-central1
+      - name: Setup Kustomize
+        run: |-
+          curl -L https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.5.4/kustomize_v4.5.4_linux_amd64.tar.gz | tar -zxf -
+          chmod u+x ./kustomize
+          shell: bash
+    
+          - name: Get GKE Cluster Credentials
+          uses: 'google-github-actions/get-gke-credentials@v0'
+          with:
+            cluster_name: gke-autopilot
+            location: autopilot-cluster-1
+    
+      - name: Deploy With Kustomize
+        run: |-
+          cd ./deployment/deployment
+          ../../kustomize edit set image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
+          ../../kustomize build . | kubectl apply -f -
+          kubectl rollout status deployment/gs-spring-boot --timeout "3m"
+          kubectl get services -o wide
+          shell: bash
+    
