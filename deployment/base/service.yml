@@ -6,7 +6,7 @@ metadata:
     app: gs-spring-boot
 spec:
   ports:
-  - name: gs-spring-boot
+  - name: gs-port
     port: 80
     targetPort: 8080
   selector:
