@@ -4,6 +4,7 @@ metadata:
   name: gs-spring-boot
   namespace: default
 spec:
+  replicas: 3
   template:
     spec:
       containers:
