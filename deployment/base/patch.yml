@@ -1,9 +1,9 @@
-apiVersion: apps/v2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gs-spring-boot
+  namespace: default
 spec:
-  # replicas: 1
   template:
     spec:
       containers:
