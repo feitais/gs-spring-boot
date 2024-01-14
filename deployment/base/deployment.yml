@@ -19,5 +19,5 @@ spec:
       - name: gs-spring-boot
         image: us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
         ports:
-        - name: gs-port
+        - name: gs-spring-boot
           containerPort: 8080
