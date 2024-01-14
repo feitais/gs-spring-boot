@@ -2,6 +2,7 @@ apiVersion: apps/v2
 kind: Deployment
 metadata:
   name: gs-spring-boot
+  namespace: default
   labels:
     app: gs-spring-boot
 spec:
