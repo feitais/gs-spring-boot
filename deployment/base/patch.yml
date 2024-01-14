@@ -17,7 +17,7 @@ spec:
             memory: 2048Mi
           requests:
             cpu: 500m
-            memory: 4096Mi
+            memory: 2048Mi
         readinessProbe:
           httpGet:
             path: /actuator/health
