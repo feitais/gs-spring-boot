@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Authenticate to Google Cloud
+      - name: Authenticate against Google Cloud
         id: 'auth'
         uses: google-github-actions/auth@v2
         with:
