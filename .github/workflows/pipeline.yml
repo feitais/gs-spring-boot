@@ -70,8 +70,9 @@ jobs:
     
       - name: Deploy With Kustomize - dev
         run: |-
-          kustomize edit set image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
-          kustomize build deployment/dev | kubectl apply -n default -f -
+          cd deployment/base
+          ../../kustomize edit set image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
+          ../../kustomize build ../overlays/dev/ | kubectl apply -n default -f -
           kubectl -n default rollout status deployment/gs-spring-boot --timeout "3m"
           kubectl -n default get services -o wide
         shell: bash
@@ -84,9 +85,9 @@ jobs:
 
       - name: Deploy With Kustomize - prod
         run: |-
-          cd deployment/prod
+          cd deployment/base
           ../../kustomize edit set image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
-          ../../kustomize build .  kubectl apply -n default -k .
+          ../../kustomize build ../overlays/dev/ | kubectl apply -n default -f -
           kubectl -n default rollout status deployment/gs-spring-boot --timeout "3m"
           kubectl -n default get services -o wide
         shell: bash
