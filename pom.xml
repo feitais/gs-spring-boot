@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<spring-framework.version>5.3.31</spring-framework.version>
+		<spring-framework.version>5.3.32</spring-framework.version>
 	</properties>
 
 	<dependencies>
@@ -131,12 +131,6 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-compress</artifactId>
 			<version>1.26.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring</artifactId>
-			<version>5.3.32</version>
 		</dependency>
 
 	</dependencies>
