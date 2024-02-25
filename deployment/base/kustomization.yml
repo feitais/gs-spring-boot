@@ -2,5 +2,4 @@ resources:
 - deployment.yml
 - service.yml
 - hpa.yml
-patchesStrategicMerge:
-- patch.yml
+
