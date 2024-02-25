@@ -11,11 +11,17 @@ spec:
     name: "gs-spring-boot"
     apiVersion: "apps/v1"
   minReplicas: 1
-  maxReplicas: 1
+  maxReplicas: 5
   metrics:
   - type: "Resource"
     resource:
       name: "cpu"
+      target:
+        type: "Utilization"
+        averageUtilization: 80
+  - type: "Resource"
+    resource:
+      name: "memory"
       target:
         type: "Utilization"
         averageUtilization: 80
