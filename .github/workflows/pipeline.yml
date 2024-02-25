@@ -8,7 +8,7 @@ jobs:
 
   run-ci:
     runs-on: ubuntu-latest
-    name: run-cicd
+    name: run-ci
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -27,13 +27,6 @@ jobs:
       - name: Setup Docker Auth
         run: gcloud --quiet auth configure-docker us-central1-docker.pkg.dev
         shell: bash 
-
-      - name: Setup Kustomize
-        run: |-
-            curl -L https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.5.4/kustomize_v4.5.4_linux_amd64.tar.gz | tar -zxf -
-            chmod u+x ./kustomize
-            ls -las
-        shell: bash
 
       - name: Setup Java
         uses: actions/setup-java@v3
@@ -81,7 +74,14 @@ jobs:
       uses: google-github-actions/setup-gcloud@v2
       with:
         project_id: 'starbien-lab'
-
+    
+    - name: Setup Kustomize
+      run: |-
+        curl -L https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.5.4/kustomize_v4.5.4_linux_amd64.tar.gz | tar -zxf -
+        chmod u+x ./kustomize
+        ls -las
+      shell: bash
+    
     - name: Get GKE Cluster Credentials
       uses: 'google-github-actions/get-gke-credentials@v2'
       with:
