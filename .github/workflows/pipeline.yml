@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  run-cicd:
+  run-ci:
     runs-on: ubuntu-latest
     name: run-cicd
     steps:
@@ -61,34 +61,51 @@ jobs:
         run: |-
           docker push us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
         shell: bash
+      
+  run-cd:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
-      - name: Get GKE Cluster Credentials
-        uses: 'google-github-actions/get-gke-credentials@v2'
-        with:
-          cluster_name: autopilot-cluster-1
-          location: us-central1
+    - name: Authenticate to Google Cloud
+      id: 'auth'
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: '${{ secrets.GKE_SA_KEY }}'
+
+    - name: Setup Google Cloud CLI
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        project_id: 'starbien-lab'
+
+    - name: Get GKE Cluster Credentials
+      uses: 'google-github-actions/get-gke-credentials@v2'
+      with:
+        cluster_name: autopilot-cluster-1
+        location: us-central1
     
-      - name: Deploy With Kustomize - dev
-        run: |-
-          cd deployment/base
-          ../../kustomize edit set image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
-          ../../kustomize build ../overlays/dev/ | kubectl apply -n default -f -
-          kubectl -n default rollout status deployment/gs-spring-boot --timeout "3m"
-          kubectl -n default get services -o wide
-        shell: bash
+    - name: Deploy With Kustomize - dev
+      run: |-
+        cd deployment/base
+        ../../kustomize edit set image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
+        ../../kustomize build ../overlays/dev/ | kubectl apply -n default -f -
+        kubectl -n default rollout status deployment/gs-spring-boot --timeout "3m"
+        kubectl -n default get services -o wide
+      shell: bash
 
-      - name: Get GKE Cluster Credentials
-        uses: 'google-github-actions/get-gke-credentials@v2'
-        with:
-          cluster_name: autopilot-cluster-2
-          location: us-central1
-
-      - name: Deploy With Kustomize - prod
-        run: |-
-          cd deployment/base
-          ../../kustomize edit set image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
-          ../../kustomize build ../overlays/dev/ | kubectl apply -n default -f -
-          kubectl -n default rollout status deployment/gs-spring-boot --timeout "3m"
-          kubectl -n default get services -o wide
-        shell: bash
-    
+    - name: Get GKE Cluster Credentials
+      uses: 'google-github-actions/get-gke-credentials@v2'
+      with:
+        cluster_name: autopilot-cluster-2
+        location: us-central1
+    - name: Deploy With Kustomize - prod
+      run: |-
+        cd deployment/base
+        ../../kustomize edit set image us-central1-docker.pkg.dev/bien-prj/bien-repository/gs-spring-boot:latest
+        ../../kustomize build ../overlays/dev/ | kubectl apply -n default -f -
+        kubectl -n default rollout status deployment/gs-spring-boot --timeout "3m"
+        kubectl -n default get services -o wide
+      shell: bash
